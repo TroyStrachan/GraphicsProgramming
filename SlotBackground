@@ -1,0 +1,37 @@
+'''
+Created on 2013-06-05
+
+@author: Troy Strachan
+'''
+import pygame
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((455, 680))
+    pygame.display.set_caption("The wonderful world of Monkey Slots")
+    
+    #background = pygame.Surface(screen.get_size())
+    background = pygame.image.load("SlotMachine1.png")
+#    reel1 = pygame.image.load("Reel[0]"+ ".jpg")
+#    reel2 = pygame.image.load("Reel[1]"+ ".jpg")
+#    reel3 = pygame.image.load("Reel[2]"+ ".jpg")
+    
+    keepGoing = True
+    #Loop
+    while keepGoing:
+    
+        #Events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                keepGoing = False
+        
+        
+        #Refresh screen
+        screen.blit(background, (10, 0))
+       
+        pygame.display.flip()
+                    
+    
+    
+    
+    
+if __name__ == '__main__': main()
