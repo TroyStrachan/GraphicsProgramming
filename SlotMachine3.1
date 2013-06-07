@@ -1,0 +1,80 @@
+'''
+Created on 2013-06-05
+
+@author: Troy Strachan
+'''
+import pygame
+pygame.init()
+
+
+    
+def main():
+
+    screen = pygame.display.set_mode((455, 680))
+    pygame.display.set_caption("The wonderful world of Monkey Slots")
+    
+    #background = pygame.Surface(screen.get_size())
+    background = pygame.image.load("SlotMachine1.png")
+#during spin, change images to monkeys
+#    reel1 = pygame.image.load("Reel[0]"+ ".jpg")
+#    reel2 = pygame.image.load("Reel[1]"+ ".jpg")
+#    reel3 = pygame.image.load("Reel[2]"+ ".jpg")
+    
+    keepGoing = True
+    #Loop
+    while keepGoing:
+    
+        #Events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                keepGoing = False
+            elif event.type == pygame.KEYDOWN:
+                keyName = pygame.key.name(event.key)
+                print ("key pressed:", keyName)
+                if event.key == pygame.K_ESCAPE:
+                    keepGoing = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                
+                print ("mouse down:", pygame.mouse.get_pos())
+
+                spinLimitX = [395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,445]
+                spinLimitY = [185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,235]
+                betMaxLimitX = [93,100,1]
+                betMaxLimitY = [390,400,1]
+                betOneLimitX = [140,150,1]
+                betOneLimitY = [390,400,1]
+                position = pygame.mouse.get_pos()
+                xCoords = position[0:1]
+                yCoords = position[1:2]
+#                for num in range(395,445)
+#                    xCoords = position[:4]
+                if xCoords + yCoords == (spinLimitX, spinLimitY):
+                    print("spin")
+#                while pygame.MOUSEBUTTONDOWN.__pos__() == pygame.mouse.get_pos(spinLimitX, spinLimitY):
+#                    print("spin")
+                if  pygame.mouse.get_pos() == xCoords + yCoords:
+                    print ("Spin")
+                elif pygame.mouse.get_pos() == pygame.mouse.get_pos(betMaxLimitX, betMaxLimitY):
+                    print ( xCoords + yCoords)
+#                elif pygame.mouse.get_pos() == pygame.mouse.get_pos(betOneLimitX, betOneLimitY):
+#                    print ("Bet One")
+        
+                        
+        #Testing location of reel images
+        reels1 = pygame.image.load("monkey1.jpg")
+        reels2 = pygame.image.load("monkey1.jpg")
+        reels3 = pygame.image.load("monkey1.jpg")
+        #Refresh screen
+        screen.blit(background, (10, 0))
+        screen.blit(reels1, (95,280))
+        screen.blit(reels2, (178, 280))
+        screen.blit(reels3, (261, 280))
+        
+        pygame.display.flip()
+                    
+    
+    
+    
+    
+if __name__ == '__main__': main()
+
