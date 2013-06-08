@@ -1,0 +1,265 @@
+#import the Tkinter library so that it is available for use
+from Tkinter import *
+import random
+def Reels():
+    """ When this function is called it determines the Bet_Line results.
+        e.g. Bar - Orange - Banana """
+        
+    # [0]Fruit, [1]Fruit, [2]Fruit
+    Bet_Line = [" "," "," "]
+    Outcome = [0,0,0]
+    
+    # Spin those reels
+    for spin in range(3):
+        Outcome[spin] = random.randrange(1,65,1)
+        # Spin those Reels!
+        if Outcome[spin] >= 1 and Outcome[spin] <=26:   # 40.10% Chance
+            Bet_Line[spin] = "Blank"
+        if Outcome[spin] >= 27 and Outcome[spin] <=36:  # 16.15% Chance
+            Bet_Line[spin] = "Monkey1"
+        if Outcome[spin] >= 37 and Outcome[spin] <=45:  # 13.54% Chance
+            Bet_Line[spin] = "Monkey2"
+        if Outcome[spin] >= 46 and Outcome[spin] <=53:  # 11.98% Chance
+            Bet_Line[spin] = "Monkey3"
+        if Outcome[spin] >= 54 and Outcome[spin] <=58:  # 7.29%  Chance
+            Bet_Line[spin] = "Monkey4"
+        if Outcome[spin] >= 59 and Outcome[spin] <=61:  # 5.73%  Chance
+            Bet_Line[spin] = "Monkey5"
+        if Outcome[spin] >= 62 and Outcome[spin] <=63:  # 3.65%  Chance
+            Bet_Line[spin] = "Monkey6"  
+        if Outcome[spin] == 64:                         # 1.56%  Chance
+            Bet_Line[spin] = "Monkey7"    
+
+    
+    return Bet_Line
+
+def is_number(Bet):
+    """ This function Checks if the Bet entered by the user is a valid number """
+    try:
+        int(Bet)
+        return True
+    except ValueError:
+        print("Please enter a valid number or Q to quit")
+        return False
+
+def pullthehandle(Bet, Player_Money, Jack_Pot):
+    """ This function takes the Player's Bet, Player's Money and Current JackPot as inputs.
+        It then calls the Reels function which generates the random Bet Line results.
+        It calculates if the player wins or loses the spin.
+        It returns the Player's Money and the Current Jackpot to the main function """
+    Player_Money -= Bet
+    Jack_Pot += (int(Bet*.15)) # 15% of the player's bet goes to the jackpot
+    win = False
+    Monkey_Reel = Reels()
+    Monkey = Monkey_Reel[0] + " - " + Monkey_Reel[1] + " - " + Monkey_Reel[2]
+    
+    # Match 3
+    if Monkey_Reel.count("Monkey1") == 3:
+        winnings,win = Bet*20,True
+    elif Monkey_Reel.count("Monkey2") == 3:
+        winnings,win = Bet*30,True
+    elif Monkey_Reel.count("Monkey3") == 3:
+        winnings,win = Bet*40,True
+    elif Monkey_Reel.count("Monkey4") == 3:
+        winnings,win = Bet*100,True
+    elif Monkey_Reel.count("Monkey5") == 3:
+        winnings,win = Bet*200,True
+    elif Monkey_Reel.count("Monkey6") == 3:
+        winnings,win = Bet*300,True
+    elif Monkey_Reel.count("Monkey7") == 3:
+        print("Lucky Monkey!!!")
+        winnings,win = Bet*1000,True
+    # Match 2
+    elif Monkey_Reel.count("Blank") == 0:
+        if Monkey_Reel.count("Monkey1") == 2:
+            winnings,win = Bet*2,True
+        if Monkey_Reel.count("Monkey2") == 2:
+            winnings,win = Bet*2,True
+        elif Monkey_Reel.count("Monkey3") == 2:
+            winnings,win = Bet*3,True
+        elif Monkey_Reel.count("Monkey4") == 2:
+            winnings,win = Bet*4,True
+        elif Monkey_Reel.count("Monkey5") == 2:
+            winnings,win = Bet*5,True
+        elif Monkey_Reel.count("Monkey6") == 2:
+            winnings,win = Bet*10,True
+        elif Monkey_Reel.count("Monkey7") == 2:
+            winnings,win = Bet*20,True
+    
+        # Match Lucky Seven
+        elif Monkey_Reel.count("Monkey7") == 1:
+            winnings, win = Bet*10,True
+            
+        else:
+            winnings, win = Bet*2,True
+    if win:    
+        print(Monkey + "\n" + "You Won $ " + str(int(winnings)) + " !!! \n")
+        Player_Money += int(winnings)
+    
+        # Jackpot 1 in 450 chance of winning
+        jackpot_try = random.randrange(1,51,1)
+        jackpot_win = random.randrange(1,51,1)
+        if  jackpot_try  == jackpot_win:
+            print ("You Won The Jackpot !!!\nHere is your $ " + str(Jack_Pot) + "prize! \n")
+            Jack_Pot = 500
+        elif jackpot_try != jackpot_win:
+            print ("You did not win the Jackpot this time. \nPlease try again ! \n")
+    # No win
+    else:
+        print(Monkey + "\nPlease try again. \n")
+    
+    return Player_Money, Jack_Pot, win
+
+def main(bet):
+    """ The Main function that runs the game loop """
+    # Initial Values
+    Player_Money = 1000
+    Jack_Pot = 500
+    Turn = 1
+    Bet = 0
+    Prev_Bet=0
+    win_number = 0
+    loss_number = 0
+    
+    # Flag to initiate the game loop
+    KeepGoing = True
+    
+    while KeepGoing == True:
+        win = 0
+        # Give the player some money if he goes broke
+        if Player_Money <1:
+            input("You have no more money. Here is $500 \nPress Enter\n")
+            Player_Money = 500
+        
+        # User Input
+        
+        Prompt = raw_input(" Place Your Bet ! \n Jackpot $ " + str(Jack_Pot) + "\n Money $ " + str(Player_Money) + "\n Q = quit \n")
+        #Prompt = button1Click(bet)
+        if Prompt  == "q" or Prompt  == "Q":
+            KeepGoing = False
+            break
+        
+        if Prompt == "" and Turn >1:
+            Bet = Prev_Bet
+            print("Using Previous Bet")
+            if Bet > Player_Money:
+                print("Sorry, you only have $" + str(Player_Money) + " \n")
+            elif Bet <= Player_Money:
+                Turn +=1
+                Prev_Bet = Bet
+                Player_Money, Jack_Pot, win = pullthehandle(Bet, Player_Money, Jack_Pot)
+        
+        elif is_number(Prompt ):
+            Bet = int(Prompt )
+            # not enough money
+            if Bet > Player_Money:
+                print("Sorry, you only have $" + str(Player_Money) + " \n")
+                
+            # Let's Play
+            elif Bet <= Player_Money:
+                Turn +=1
+                Prev_Bet = Bet
+                Player_Money, Jack_Pot, win = pullthehandle(Bet, Player_Money, Jack_Pot)
+        
+        # determine win/loss ratio for debugging purposes
+        if win:
+            win_number += 1
+        else:
+            loss_number += 1
+        win_ratio = "{:.2%}".format(win_number / Turn)
+        print("Wins: " + str(win_number) + "\nLosses: " + str(loss_number) + "\nWin Ratio: " + win_ratio + "\n")           
+                
+    
+    #The End
+    print("- Program Terminated -")
+#create the MyApp Class
+class MyApp:
+    #define the attributes of the class
+    def __init__(self, parent):
+        self.myParent = parent
+        #creates a frame whose parent is root
+        self.myContainer1 = Frame(parent)
+        #pack the frame - show it on the screen
+        self.myContainer1.pack()
+        
+        #the Bet One Credit attributes
+        self.BetOneBut = Button(self.myContainer1)
+        self.BetOneBut.configure(text="Bet One", background="red")
+        #display Bet One credit
+        self.BetOneBut.pack(side=LEFT)
+        #Bind Bet One Credit with button1Click
+        self.BetOneBut.bind("<Button-1>", self.button1Click)
+
+        #the Bet Max credits attributes
+        self.BetMax = Button(self.myContainer1)
+        self.BetMax.configure(text="Bet Max", background="red")
+        #display Bet Max
+        self.BetMax.pack(side=RIGHT)
+        #Bind Bet Max with button2Click
+        self.BetMax.bind("<Button-1>", self.button2Click)
+        
+        #the Spin button
+        self.Spin = Button(self.myContainer1)
+        self.Spin.configure(text="Spin", background="blue")
+        #display Spin in middle
+        self.Spin.pack(side=RIGHT)
+        #Bind Bet Max with button3Click
+        self.Spin.bind("<Button-1>", self.button3Click)
+
+        #the reset button
+        self.Reset = Button(self.myContainer1)
+        self.Reset.configure(text="Reset", background="purple")
+        #display reset button on the left
+        self.Reset.pack(side=RIGHT)
+        #Bind Bet Max with button4Click
+        self.Reset.bind("<Button-1>", self.button4Click)
+
+        #the close button
+        self.Close = Button(self.myContainer1)
+        self.Close.configure(text="close", background="white" )
+        #display close button on the left
+        self.Close.pack(side=RIGHT)
+        #Bind Bet Max with button4Click
+        self.Close.bind("<Button-1>", self.button5Click)
+
+    #change colour of buttons
+    def button1Click(self, event): 
+        #set bet = 1  
+        is_number(1)
+
+    #Bet Max
+    def button2Click(self, event):
+        #after it is clicked once it cannot be used again
+        self.BetMax.configure(state="disabled")
+        is_number(100)
+        #Set bet = 100
+    #Spin
+    def button3Click(self, event): 
+        # enable spin event
+        pullthehandle()
+    
+            
+    #Reset
+    def button4Click(self, event): 
+        #set bet = 0, credits = 1000, jackpot = 500
+        if self.Reset["background"] == "purple":
+            print("clicked reset")
+            self.Reset["background"] = "blue"
+        else:
+            self.Reset["background"] = "purple"
+            print("unchecked reset")
+            
+    #Close
+    def button5Click(self, event):
+        #Keep_going= False
+        self.myParent.destroy()
+        
+def main():
+    #create a top-level window
+    root = Tk()
+    #call the MyApp class
+    myapp = MyApp(root)
+    #execute the mainloop method of the "root" object
+    root.mainloop()
+
+if __name__ == "__main__": main()
