@@ -1,0 +1,306 @@
+import pygame, random
+pygame.init()
+#TRANSPARENCY = (0,0,0,0)
+screen = pygame.display.set_mode((640, 480))
+            
+class walker(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("oldman00.png")
+        self.image = self.image.convert()
+        tranColor = self.image.get_at((1, 1))
+        self.image.set_colorkey(tranColor)
+        self.rect = self.image.get_rect()
+        self.rect.center = (100, 375)
+        self.img = []
+# character running        
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dx = 0
+        self.dy = 0
+        
+    def checkKeys(self):
+        #determines movement of player, up, down, left, right and speed
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            self.loadPicsRight()
+            self.movement()
+            self.dx += 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_RIGHT]:
+                #moves the character twice as fast
+                self.loadPicsRight()
+                self.movement()
+                self.dx += 3
+            
+        if keys[pygame.K_LEFT]:
+            #character faces left
+            self.loadPicsRight()
+            self.movement()
+            self.dx -= 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_LEFT]:
+                #moves the character twice as fast
+                self.loadPicsRight()
+                self.movement()
+                self.dx -= 3
+                
+        if keys[pygame.K_UP]:
+            #character faces away
+            self.loadPicsRight()
+            self.movement()
+            self.dy -= 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_UP]:
+                #moves the character twice as fast
+                self.loadPicsRight()
+                self.movement()
+                self.dy -= 3
+                
+        if keys[pygame.K_DOWN]:
+            #character faces towards
+            self.loadPicsRight()
+            self.movement()
+            self.dy += 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_DOWN]:
+                #moves the character twice as fast
+                self.loadPicsRight()
+                self.movement()
+                self.dy += 3
+                
+    def movement(self):
+        self.rect.center = (100, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        self.frame += 1
+        if self.frame > 2:
+                self.frame = 0
+        self.image = self.img[self.frame]
+        self.rect.centerx += self.dx
+        self.rect.centery += self.dy
+            
+    def loadPicsRight(self):
+        for i in range(3):
+            imgName = "oldman0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg) 
+            
+    def checkBounds(self):
+        #determines where the bound of the character are
+        if self.dx > 522:
+            self.dx = 522
+        
+        if self.dx >= 500:
+            Background.update(dx = 3)
+        if self.dx < -77:
+            self.dx = -77
+        if self.dy > 75:
+            self.dy = 75
+        if self.dy < -150:
+            self.dy = -150
+                      
+    def update(self):
+        self.checkBounds()
+        self.checkKeys()
+        screen.fill(000000)
+    
+class Beer(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("beer.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+       
+class Shake(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("shake.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Fries(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("fries.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Chicken(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("chicken.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 400)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Condom(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("condom.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+         
+class CollectedItem1(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("enemy010.png")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.reset()
+    def reset(self):
+        self.rect.center =()
+        
+class Background(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("citybackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+        #controls when to loop the background
+    def update(self):
+        self.rect.centerx -= self.dx
+
+class Background2(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("barbackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+        #controls when to loop the background
+    def update(self):
+        self.rect.centerx -= self.dx
+
+class Background3(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("bedbackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+        #controls when to loop the background
+    def update(self):
+        self.rect.centerx -= self.dx
+              
+def game():
+    
+    screen = pygame.display.set_mode((640, 480))
+    
+    pygame.display.set_caption("The Afterwife")
+    
+    background = pygame.Surface(screen.get_size())
+    screen.blit(background, (0, 0))
+
+    hero = walker(screen)
+    #items in the city
+    item1 = Chicken(screen)
+    item11 = Shake(screen)
+    item12 = Fries(screen)
+    
+    item2 = Beer(screen)
+    item22 = Condom(screen)
+    back = Background()
+#    collected = CollectedItem1()
+    
+    chicken = pygame.sprite.GroupSingle(item1)
+    fries = pygame.sprite.GroupSingle(item11)
+    shake = pygame.sprite.GroupSingle(item12)
+    
+    beer = pygame.sprite.GroupSingle(item2) 
+    condom = pygame.sprite.GroupSingle(item22)
+    
+    Sprites = pygame.sprite.OrderedUpdates(back,hero)
+    itemlvl1 = pygame.sprite.Group(item1, item11, item12)
+    itemlvl2 = pygame.sprite.Group(item2, item22)
+    
+    lvl2a = False
+    lvl2b = False
+    lvl2c = False
+    
+    lvl3a = False
+    lvl3b = False
+    
+    clock = pygame.time.Clock()
+    keepGoing = True
+    while keepGoing:
+        #controls the speed of the game
+        clock.tick(25)
+        pygame.mouse.set_visible(False)
+
+        #collecting collisions
+        if pygame.sprite.spritecollide(hero, chicken, True):
+            lvl2a = True
+        if pygame.sprite.spritecollide(hero, fries, True):
+            lvl2b = True
+        if pygame.sprite.spritecollide(hero, shake, True):
+            lvl2c = True
+        if lvl2a is True and lvl2b is True and lvl2c is True:        
+                    #if collect1:
+                    itemlvl2.update()
+                    itemlvl2.draw(screen)
+                    #gets rid of the backgroundimage
+                    back.kill()
+                    #changes the background - new level
+                    back = Background2()
+                    # repopulates all the images
+                    Sprites = pygame.sprite.OrderedUpdates(back, hero, itemlvl2)
+            
+        if pygame.sprite.spritecollide(hero, beer, True): 
+            lvl3a = True
+        if pygame.sprite.spritecollide(hero, condom, True): 
+            lvl3b = True
+        if lvl3a is True and lvl3b is True:
+            back.kill()
+            back = Background3()
+            Sprites = pygame.sprite.OrderedUpdates(back,hero)
+            
+        Sprites.update()
+        itemlvl1.update()
+        
+        Sprites.draw(screen)
+        itemlvl1.draw(screen)
+        
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                keepGoing = False
+        
+def main():
+    keepGoing = False
+    if not keepGoing:
+        game()
+            
+if __name__ == "__main__":
+    main()
