@@ -1,0 +1,991 @@
+#Authors: Hayley McBride and Troy Strachan
+#Purpose: Create a game with 3 levels.
+#Date: August 5 2013
+
+import pygame, random, time
+pygame.init()
+#TRANSPARENCY = (0,0,0,0)
+screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN)
+            
+class Walker(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("oldman00.png")
+        self.image = self.image.convert()
+        tranColor = self.image.get_at((1, 1))
+        self.image.set_colorkey(tranColor)
+        self.rect = self.image.get_rect()
+        self.rect.center = (100, 375)
+        self.img = []
+# character running        
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dx = 0
+        self.dy = 0
+        
+    def checkKeys(self):
+        #determines movement of player, up, down, left, right and speed
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            self.image = pygame.image.load("oldman00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dx += 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_RIGHT]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("oldman00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dx += 3
+            
+        if keys[pygame.K_LEFT]:
+            #character faces left
+            self.image = pygame.image.load("oldmanl00.png")
+            self.loadPicsLeft()
+            self.movement()
+            self.dx -= 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_LEFT]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("oldmanl00.png")
+                self.loadPicsLeft()
+                self.movement()
+                self.dx -= 3
+                
+        if keys[pygame.K_UP]:
+            #character faces away
+            self.image = pygame.image.load("oldman00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dy -= 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_UP]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("oldman00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dy -= 3
+                
+        if keys[pygame.K_DOWN]:
+            #character faces towards
+            self.image = pygame.image.load("oldman00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dy += 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_DOWN]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("oldman00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dy += 3
+                
+    def movement(self):
+        self.rect.center = (100, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        self.frame += 1
+        if self.frame > 2:
+                self.frame = 0
+        self.image = self.img[self.frame]
+        self.rect.centerx += self.dx
+        self.rect.centery += self.dy
+            
+    def loadPicsRight(self):
+        for i in range(3):
+            imgName = "oldman0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg) 
+            
+    def loadPicsLeft(self):
+        for i in range(3):
+            imgName = "oldmanl0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg) 
+                    
+    def checkBounds(self):
+        #determines where the bound of the character are
+        if self.dx > 522:
+            self.dx = 522
+        
+        if self.dx >= 500:
+            Background.update(dx = 3)
+        if self.dx < -77:
+            self.dx = -77
+        if self.dy > 75:
+            self.dy = 75
+        if self.dy < -150:
+            self.dy = -150
+                      
+    def update(self):
+        self.checkBounds()
+        self.checkKeys()
+        screen.fill(000000)
+        
+class WalkerNaked(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("herouw00.png")
+        self.image = self.image.convert()
+        tranColor = self.image.get_at((1, 1))
+        self.image.set_colorkey(tranColor)
+        self.rect = self.image.get_rect()
+        self.rect.center = (100, 375)
+        self.img = []
+# character running        
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dx = 0
+        self.dy = 0
+        
+    def checkKeys(self):
+        #determines movement of player, up, down, left, right and speed
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT]:
+            self.image = pygame.image.load("herouw00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dx += 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_RIGHT]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("herouw00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dx += 3
+            
+        if keys[pygame.K_LEFT]:
+            #character faces left
+            self.image = pygame.image.load("herouw00.png")
+            self.loadPicsLeft()
+            self.movement()
+            self.dx -= 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_LEFT]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("herouw00.png")
+                self.loadPicsLeft()
+                self.movement()
+                self.dx -= 3
+                
+        if keys[pygame.K_UP]:
+            #character faces away
+            self.image = pygame.image.load("herouw00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dy -= 3
+            
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_UP]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("herouw00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dy -= 3
+                
+        if keys[pygame.K_DOWN]:
+            #character faces towards
+            self.image = pygame.image.load("herouw00.png")
+            self.loadPicsRight()
+            self.movement()
+            self.dy += 3
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_DOWN]:
+                #moves the character twice as fast
+                self.image = pygame.image.load("herouw00.png")
+                self.loadPicsRight()
+                self.movement()
+                self.dy += 3
+                
+    def movement(self):
+        self.rect.center = (100, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        self.frame += 1
+        if self.frame > 2:
+                self.frame = 0
+        self.image = self.img[self.frame]
+        self.rect.centerx += self.dx
+        self.rect.centery += self.dy
+            
+    def loadPicsRight(self):
+        for i in range(3):
+            imgName = "herouw0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg) 
+            
+    def loadPicsLeft(self):
+        for i in range(3):
+            imgName = "herouw0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg) 
+                    
+    def checkBounds(self):
+        #determines where the bound of the character are
+        if self.dx > 522:
+            self.dx = 522
+        
+        if self.dx >= 500:
+            Background.update(dx = 3)
+        if self.dx < -77:
+            self.dx = -77
+        if self.dy > 75:
+            self.dy = 75
+        if self.dy < -150:
+            self.dy = -150
+                      
+    def update(self):
+        self.checkBounds()
+        self.checkKeys()
+        screen.fill(000000)
+
+class BadGirl(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("badgirl00.png")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.img = []
+        #initialize animated sprites
+        self.loadPics()
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dx = 4
+        self.dy = 0
+        self.reset()
+
+    def update(self):
+        #starting point of the character (x,y)
+        self.rect.center = (500, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        # incease frame to loop images - appearance of animation
+        self.frame += 1
+        if self.frame > 3:
+            self.frame = 0
+        #dig up images from array 
+        self.image = self.img[self.frame]
+        # takes center of the image to create the illusion of animation, replaces image on previous image center
+        self.rect.centerx += self.dx
+        if self.rect.centerx > self.screen.get_width():
+            self.rect.centerx -= 1
+        #allows the enemy to move to the left. IF ">" is replaced with "<" image just loops on itself and stays in place
+        if self.rect.left > screen.get_width():
+            self.reset()
+    
+    def reset(self):
+        self.rect.bottom = screen.get_height()            
+        self.rect.left = 0
+    def loadPics(self):
+        for i in range(4):
+            imgName = "badgirl0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg)
+                    
+class BadGirlRight(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("badgirlr00.png")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.img = []
+        #initialize animated sprites
+        self.loadPics()
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dx = 4
+        self.dy = 0
+        self.reset()
+
+    def update(self):
+        #starting point of the character (x,y)
+        self.rect.center = (-300, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        # incease frame to loop images - appearance of animation
+        self.frame += 1
+        if self.frame > 3:
+            self.frame = 0
+        #dig up images from array 
+        self.image = self.img[self.frame]
+        # takes center of the image to create the illusion of animation, replaces image on previous image center
+        self.rect.centerx += self.dx
+        if self.rect.centerx > self.screen.get_width():
+            self.rect.centerx -= 1
+        #allows the enemy to move to the left. IF ">" is replaced with "<" image just loops on itself and stays in place
+        if self.rect.left > screen.get_width():
+            self.reset()
+    
+    def reset(self):
+        self.rect.bottom = screen.get_height()            
+        self.rect.left = 0 
+              
+    def loadPics(self):
+        for i in range(4):
+            imgName = "badgirlr0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg)
+
+class HotGirl(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("prettyGirl00.png")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.img = []
+        #initialize animated sprites
+        self.loadPics()
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dy = 0
+        self.dx = 0
+
+    def update(self):
+        #starting point of the character (x,y)
+        self.rect.center = (500, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        # incease frame to loop images - appearance of animation
+        self.frame += 1
+        if self.frame > 3:
+            self.frame = 0
+        #dig up images from array 
+        self.image = self.img[self.frame]
+        # takes center of the image to create the illusion of animation, replaces image on previous image center
+        self.rect.centerx += self.dx
+        self.rect.centery += self.dy
+        if self.rect.top > screen.get_height():
+            self.reset()
+    
+    def reset(self):
+        self.rect.bottom = screen.get_height()            
+        self.rect.left = 0
+        #allows the enemy to move to the left. IF ">" is replaced with "<" image just loops on itself and stays in place
+                
+    def loadPics(self):
+        for i in range(4):
+            imgName = "prettyGirl0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg)
+
+class HotGirlNaked(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("prettyGirl00.png")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.img = []
+        #initialize animated sprites
+        self.loadPics()
+        self.frame = 0
+        self.delay = 3
+        self.pause = self.delay
+        self.dy = 0
+        self.dx = 0
+
+    def update(self):
+        #starting point of the character (x,y)
+        self.rect.center = (500, 375)
+        self.pause -= 1
+        if self.pause <= 0:
+            self.pause = self.delay
+        # incease frame to loop images - appearance of animation
+        self.frame += 1
+        if self.frame > 3:
+            self.frame = 0
+        #dig up images from array 
+        self.image = self.img[self.frame]
+        # takes center of the image to create the illusion of animation, replaces image on previous image center
+        self.rect.centerx += self.dx
+        self.rect.centery += self.dy
+        if self.rect.top > screen.get_height():
+            self.reset()
+    
+    def reset(self):
+        self.rect.bottom = screen.get_height()            
+        self.rect.left = 0
+        #allows the enemy to move to the left. IF ">" is replaced with "<" image just loops on itself and stays in place
+                
+    def loadPics(self):
+        for i in range(4):
+            imgName = "prettyGirl0{0}.png".format(i)
+            tmpImg = pygame.image.load(imgName)
+            tmpImg.convert()
+            tranColor = tmpImg.get_at((0, 0))
+            tmpImg.set_colorkey(tranColor)
+            self.img.append(tmpImg)
+                       
+#beginning of collectible items
+class Beer(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("beer.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+       
+class Shake(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("shake.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Fries(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("fries.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Chicken(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("chicken.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 400)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Condom(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("condom.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Martini(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("martiniglass.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+    
+class Record(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("record.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class BallGag(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("ballgag.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Whip(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("whip.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)
+
+class Handcuffs(pygame.sprite.Sprite):
+    def __init__(self, screen):
+        self.screen = screen
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("handcuffs.png")
+        self.image = self.image.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.dx = random.randrange(0, 522)
+        self.dy = random.randrange(200, 450)
+    def update(self):
+        self.rect.center = (self.dx, self.dy)       
+       
+def OpeningScreen():
+    #setting caption
+    pygame.display.set_caption("The Afterwife")
+    insFont = pygame.font.SysFont(None, 50)
+    insLabels = []
+    #text for instructions and background info
+    openScreen = (
+    "           The Afterwife",
+    "You are a middle aged gentleman",
+    "you are recently divorced and ",
+    "getting increasingly lonely",
+    "Collect the objects to help pick",
+    "up the girl of your dreams", 
+    "but watch out for slutty women",
+    "with numerous diseases",
+    "Use arrow keys to control Walker",
+    "There's a way to make him move",
+    "faster... think you can find it?",
+    "    Click to start or ESC to quit"
+    )
+    
+    for line in openScreen:
+        tempLabel = insFont.render(line, 1, (255, 255, 0))
+        insLabels.append(tempLabel)
+ 
+    keepGoing = True
+    pygame.mouse.set_visible(False)
+    while keepGoing:
+        for event in pygame.event.get():
+            #starts the game if mouse button is pressed
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                game()
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                keepGoing = False
+                pygame.quit()
+        for i in range(len(insLabels)):
+            screen.blit(insLabels[i], (50, 30*i))
+        pygame.display.flip()
+    pygame.mouse.set_visible(True)
+
+    return keepGoing
+
+def WinScreen():
+    insFont = pygame.font.SysFont(None, 50)
+    insLabels = []
+    #text for instructions and reason for dying
+    endScreen = (
+    "Congratulations! You found the ",
+    "                 love of your life!    ",
+    "",
+    "Now stop being a pig and trying ", 
+    "",
+    "                     get laid!  ",
+    "",
+    "   You have a beautiful girl so ",
+    "", 
+    "   Make the best of it weiner!  ",
+    "",
+    "                    THE END     ",
+    "",
+    "",
+    "             Press ESC to quit  ",
+    )
+    
+    for line in endScreen:
+        tempLabel = insFont.render(line, 1, (255, 255, 0))
+        insLabels.append(tempLabel)
+ 
+    keepGoing = True
+    pygame.mouse.set_visible(False)
+    while keepGoing:
+        
+        for event in pygame.event.get():
+            #needed to add this in case they passed to the next level
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                game()
+            #if escape key is pressed window closes
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                keepGoing = False
+                pygame.quit()
+
+        for i in range(len(insLabels)):
+            screen.blit(insLabels[i], (50, 30*i))
+        pygame.display.flip()
+    pygame.mouse.set_visible(True)
+
+    return keepGoing
+
+def EndScreen():
+    
+    insFont = pygame.font.SysFont(None, 50)
+    insLabels = []
+    #text for instructions and reason for dying
+    endScreen = (
+    "The tramp got you! She gave you",
+    "AIDS and sypha-ghono-herpa-litis",
+    "",
+    "   At least you got some before", 
+    "",
+    "               you die a ",
+    "",
+    "   horrible, painful death.",
+    "", 
+    "   I've heard it hurts when ",
+    "",
+    "               you pee.",
+    "",
+    "Good luck you will need it!",
+    "   Press ESC to quit",
+    )
+    
+    for line in endScreen:
+        tempLabel = insFont.render(line, 1, (255, 255, 0))
+        insLabels.append(tempLabel)
+ 
+    keepGoing = True
+    pygame.mouse.set_visible(False)
+    while keepGoing:
+        
+        for event in pygame.event.get():
+            #needed to add this in case they passed to the next level
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                game()
+            #if escape key is pressed window closes
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                keepGoing = False
+                pygame.quit()
+
+        for i in range(len(insLabels)):
+            screen.blit(insLabels[i], (50, 30*i))
+        pygame.display.flip()
+    pygame.mouse.set_visible(True)
+
+    return keepGoing
+
+class Background(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        #background image name
+        self.image = pygame.image.load("citybackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+    def update(self):
+        self.rect.centerx -= self.dx
+
+class Background2(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        #background image name
+        self.image = pygame.image.load("barbackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+    def update(self):
+        self.rect.centerx -= self.dx
+
+class Background3(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        #background image name
+        self.image = pygame.image.load("clubbackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+    def update(self):
+        self.rect.centerx -= self.dx
+
+class Background4(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        #background image name
+        self.image = pygame.image.load("bedroombackground.jpg")
+        self.image = self.image.convert()
+        self.rect = self.image.get_rect()
+        self.dx = 0
+    def update(self):
+        self.rect.centerx -= self.dx              
+
+def game():
+    
+    screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN)
+    
+    background = pygame.Surface(screen.get_size())
+    
+    screen.blit(background, (0, 0))
+
+    if not pygame.mixer:
+        print("problem with sound")
+    else:
+        pygame.mixer.init()
+        sndCityBgMusic = pygame.mixer.Sound("best8bitsong.ogg")
+        sndClubBgMusic = pygame.mixer.Sound("moonwalk_bad.ogg")
+        sndBarBgMusic = pygame.mixer.Sound("Whistle_Flo_Rida_8Bit.ogg")
+        #sndPickUp = pygame.mixer.Sound(".ogg")
+        #setting the volume
+        sndCityBgMusic.set_volume(.1)
+        sndClubBgMusic.set_volume(.3)
+        sndBarBgMusic.set_volume(.1)
+    
+    #main character 
+    hero = Walker(screen)
+    heroUnderwear = WalkerNaked(screen)
+    #items in the city
+    item1 = Chicken(screen)
+    item11 = Shake(screen)
+    item12 = Fries(screen)
+    #items in the bar
+    item2 = Beer(screen)
+    item21a = BadGirl(screen)
+    item21b = BadGirlRight(screen)
+    item22 = Condom(screen)
+    #items in the club
+    item3 = Martini(screen)
+    item31 = Record(screen)
+    hotgirl = HotGirl(screen)
+    #items in the bedroom
+    item4 = BallGag(screen)
+    item41 = Handcuffs(screen)
+    item42 = Whip(screen)
+    hotgirlnaked = HotGirlNaked(screen)
+    #background
+    back = Background()
+    #setting up the groups for collisions for the city
+    chicken = pygame.sprite.GroupSingle(item1)
+    fries = pygame.sprite.GroupSingle(item11)
+    shake = pygame.sprite.GroupSingle(item12)
+    #setting up the groups for the bar
+    beer = pygame.sprite.GroupSingle(item2) 
+    condom = pygame.sprite.GroupSingle(item22)
+
+    #setting up the groups for the club
+    martini = pygame.sprite.GroupSingle(item3)
+    record = pygame.sprite.GroupSingle(item31)
+    hotGirl = pygame.sprite.GroupSingle(hotgirl)
+    
+    #setting up the groups for the bedroom
+    whip = pygame.sprite.GroupSingle(item4)
+    ballgag = pygame.sprite.GroupSingle(item41)
+    handcuffs = pygame.sprite.GroupSingle(item42)
+    #heroUnderwear = pygame.sprite.GroupSingle(heronaked)
+    hotgirlnaked = pygame.sprite.GroupSingle(hotgirlnaked)
+    
+    Sprites = pygame.sprite.OrderedUpdates(back,hero)
+    #setting up the groups for displaying on screen
+    itemlvl1 = pygame.sprite.Group(item1, item11, item12)
+    itemlvl2 = pygame.sprite.Group(item2, item22)
+    itemlvl2bad = pygame.sprite.GroupSingle(item21a)
+    itemlvl3 = pygame.sprite.Group(item3, item31, hotgirl)
+    itemfinal = pygame.sprite.Group(item4, item41, item42)
+    
+    #flags to help the player move to next level
+    lvl2a = False
+    lvl2b = False
+    lvl2c = False
+    
+    lvl3a = False
+    lvl3b = False
+    
+    lvl4a = False
+    lvl4b = False
+    lvl4c = False
+    
+    finisha = False
+    finishb = False
+    finishc = False
+    finishd = False
+    
+    clock = pygame.time.Clock()
+    keepGoing = True
+    while keepGoing:
+        sndCityBgMusic.play()
+        #controls the speed of the game
+        clock.tick(25)
+        pygame.mouse.set_visible(False)
+#####################FIRST LEVEL - the street###########################
+        #collecting collisions
+        if pygame.sprite.spritecollide(hero, chicken, True):
+            lvl2a = True
+            chicken.remove()
+        if pygame.sprite.spritecollide(hero, fries, True):
+            lvl2b = True
+            fries.remove()
+        if pygame.sprite.spritecollide(hero, shake, True):
+            lvl2c = True
+            shake.remove
+#####################SECOND LEVEL - the bar###########################
+        if lvl2a is True and lvl2b is True and lvl2c is True:        
+            sndCityBgMusic.fadeout(3)
+            sndBarBgMusic.play()
+            itemlvl2.update()
+            itemlvl2.draw(screen)
+            #gets rid of the backgroundimage
+            back.kill()
+            #changes the background - new level
+            back = Background2()
+            # repopulates all the images
+            Sprites = pygame.sprite.OrderedUpdates(back, hero, itemlvl2, itemlvl2bad)
+            item21a.dx -= random.randint(5,15)
+            #if keepGoing == True:
+            if item21a.dx < -450:
+                item21a.remove(Sprites)
+                item21b.add(Sprites)
+                item21b.dx += random.randint(5,15)
+                
+            if item21b.dx < 450:
+                item21b.remove(Sprites)
+                item21a.add(Sprites)
+                item21a.dx -= random.randint(5,15)       
+                
+        if pygame.sprite.spritecollide(hero, beer, True): 
+            lvl3a = True
+            beer.remove()
+        if pygame.sprite.spritecollide(hero, condom, True): 
+            lvl3b = True
+            condom.remove
+        #collision for when you run into the tramp
+        CaughtSomething = pygame.sprite.spritecollide(hero, itemlvl2bad, False)
+        
+        if CaughtSomething:
+            #removes everything from the screen
+            sndBarBgMusic.stop()
+            back.kill()
+            EndScreen()
+#####################THIRD LEVEL - the club###########################
+        if lvl3a is True and lvl3b is True:
+            sndBarBgMusic.stop()
+            sndClubBgMusic.play()
+            sndClubBgMusic.set_volume(.1)
+            #itemlvl2bad.kill
+            back.kill()
+            back = Background3()
+            Sprites = pygame.sprite.OrderedUpdates(back,hero, itemlvl3)
+            hotgirl.dx -= random.randint(1,6)
+            hotgirl.dy -= random.randint(1,4)
+            
+            print "hotgirl width", hotgirl.dx
+            #if keepGoing == True:
+            if hotgirl.dx < -475:
+                hotgirl.kill()
+                hotgirl.add(Sprites)
+                hotgirl.dx += random.randint(1,6)
+                
+            if hotgirl.dx > 900:
+                hotgirl.kill()
+                hotgirl.add(Sprites)
+                hotgirl.dx -= random.randint(1,6)
+
+            if hotgirl.dy < -150:
+                hotgirl.dy += random.randint(1,4)
+                print "hotgirl height", hotgirl.dy
+            if hotgirl.dy > 900:
+                hotgirl.dy -= random.randint(1.6)
+
+        if pygame.sprite.spritecollide(hero, martini, True): 
+            lvl4a = True
+            martini.remove()
+        if pygame.sprite.spritecollide(hero, record, True): 
+            lvl4b = True
+            record.remove()
+        if pygame.sprite.spritecollide(hero, hotGirl, True): 
+            lvl4c = True
+            hotGirl.remove()
+#####################FORTH LEVEL - bedroom###########################
+        if lvl4a is True and lvl4b is True and lvl4c is True:
+            sndClubBgMusic.stop()
+            back.kill()
+            hero.kill()
+            hotgirl.kill()
+            back = Background4()
+            Sprites = pygame.sprite.OrderedUpdates(back, heroUnderwear, hotgirlnaked, itemfinal)
+        
+        if pygame.sprite.spritecollide(heroUnderwear, ballgag, True): 
+            finisha = True
+            ballgag.remove()
+        if pygame.sprite.spritecollide(heroUnderwear, whip, True): 
+            finishb = True
+            whip.remove()
+        if pygame.sprite.spritecollide(heroUnderwear, handcuffs, True): 
+            finishc = True
+            handcuffs.remove()
+        if pygame.sprite.spritecollide(heroUnderwear, hotgirlnaked, True):
+            finishd = True
+            hotgirlnaked.remove()
+            
+        if finisha is True and finishb is True and finishc is True and finishd is True:
+            sndClubBgMusic.stop()
+            back.kill()
+            WinScreen()
+            
+        #displaying sprites on screen    
+        Sprites.update()
+        itemlvl1.update()
+        
+        Sprites.draw(screen)
+        itemlvl1.draw(screen)
+        
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                keepGoing = False
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                keepGoing = False
+                pygame.quit()
+        
+def main():
+    keepGoing = False
+    if not keepGoing:
+        OpeningScreen()
+        pygame.quit()
+            
+if __name__ == "__main__":
+    main()
